@@ -9,6 +9,6 @@ public interface IPostRepository
     Task<IEnumerable<Post?>> GetByAuthorName(string authorName);
     Task<IEnumerable<Post?>> GetByAuthorIdAsync(int authorId);
     Task CreateAsync(Post post);
-    Task? UpdateAsync(Post post);
-    Task? DeleteAsync(int id);
+    Task<Post> UpdateAsync(Post post);
+    Task<bool> DeleteAsync(int id);
 }

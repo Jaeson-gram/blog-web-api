@@ -93,11 +93,6 @@ public class PostController : ControllerBase
         }
         
         var updated = await _postService.UpdateAsync(id, postDto);
-
-        if (updated)
-        {
-            return Ok();
-        }
         
         return StatusCode(StatusCodes.Status500InternalServerError);
     }
@@ -107,12 +102,7 @@ public class PostController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _postService.DeleteAsync(id);
-
-        if (!deleted)
-        {
-            return NotFound("no post with that id was found");
-        }
+        var deleted =  _postService.DeleteAsync(id);
 
         return NoContent();
     }
