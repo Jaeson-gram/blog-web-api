@@ -1,3 +1,4 @@
+using BloggerWebApi.BloggerWebApi.Application.Interfaces;
 using BloggerWebApi.BloggerWebApi.Application.Services;
 using BloggerWebApi.BloggerWebApi.Domain.Entities;
 using BloggerWebApi.BloggerWebApi.Infrastructure.Persistence.InMemory;
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSingleton<PostService>();
 builder.Services.AddSingleton<InMemoryRepository>();
+builder.Services.AddSingleton<IPostRepository, InMemoryRepository>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
