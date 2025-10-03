@@ -29,17 +29,18 @@ public class PostService
         return _mapper.Map<IEnumerable<PostDto>>(posts);
     }
 
-    public async Task<Post?> GetByIdAsync(int id)
+    public async Task<PostDto?> GetByIdAsync(int id)
     {
         // var post = _storage.Posts.FirstOrDefault(p => p.Id == id);
         // return Task.FromResult(post is null ? null : MapToDto(post));
 
-        return await _postRepository.GetByIdAsync(id);
+        var post = await _postRepository.GetByIdAsync(id);
+        return post == null ? null : _mapper.Map<PostDto>(post);
     }
     
     // public Task<IEnumerable<PostDto>> GetByAuthorIdAsync(int authorId)
     // make it work with postdto..
-    public async Task<IEnumerable<Post?>> GetByAuthorIdAsync(int authorId)
+    public async Task<IEnumerable<PostDto?>> GetByAuthorIdAsync(int authorId)
     {
         // Select doesn't work.. why?
         // var result = _storage.Posts.Where(p => p.Author.Id == authorId);
@@ -50,11 +51,12 @@ public class PostService
         // }
         // return result;
         
-        return await _postRepository.GetByAuthorIdAsync(authorId);
+        var posts = await _postRepository.GetByAuthorIdAsync(authorId);
+        return _mapper.Map<IEnumerable<PostDto>>(posts);
     }
 
     // author name..
-    public async Task<IEnumerable<Post?>> GetByAuthorNameAsync(string authorName)
+    public async Task<IEnumerable<PostDto?>> GetByAuthorNameAsync(string authorName)
     {
         // Select doesn't work.. why?
         // var result = _storage.Posts.Where(p => p.AuthorName.ToLower() == authorName.ToLower());
@@ -66,10 +68,11 @@ public class PostService
             
         // return result;
         
-        return await _postRepository.GetByAuthorName(authorName);
+        var posts = await _postRepository.GetByAuthorName(authorName);
+        return _mapper.Map<IEnumerable<PostDto>>(posts);
     }
     
-    public async Task<Post> CreateAsync(CreatePostDto dto)
+    public async Task<PostDto> CreateAsync(CreatePostDto dto)
     {
         // var post = new Post(dto.Title, dto.Content, dto.AuthorName)
         // {
@@ -79,7 +82,9 @@ public class PostService
         //
         // return Task.FromResult(MapToDto(post));
 
-        return await _postRepository.CreateAsync(dto);
+        var post = _mapper.Map<Post>(dto);
+        var createdPost = _postRepository.CreateAsync(post);
+        return _mapper.Map<PostDto>(createdPost);
     }
     
     public Task<bool> UpdateAsync(int id, CreatePostDto dto)
