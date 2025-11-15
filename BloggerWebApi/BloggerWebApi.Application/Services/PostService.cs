@@ -22,7 +22,7 @@ public class PostService
 
     public async Task<IEnumerable<PostDto>> GetAllAsync()
     {
-        var posts = _postRepository.GetAllAsync();
+        var posts = await _postRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<PostDto>>(posts);
     }
 

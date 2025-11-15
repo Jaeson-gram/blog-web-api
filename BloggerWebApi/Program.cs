@@ -1,7 +1,9 @@
 using BloggerWebApi.BloggerWebApi.Application.Interfaces;
+using BloggerWebApi.BloggerWebApi.Application.Mappings;
 using BloggerWebApi.BloggerWebApi.Application.Services;
 using BloggerWebApi.BloggerWebApi.Domain.Entities;
 using BloggerWebApi.BloggerWebApi.Infrastructure.Persistence.InMemory;
+// using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +12,7 @@ builder.Services.AddSingleton<PostService>();
 builder.Services.AddSingleton<InMemoryRepository>();
 builder.Services.AddSingleton<IPostRepository, InMemoryRepository>();
 
-builder.Services.AddAutoMapper(typeof(Program));
+ builder.Services.AddAutoMapper(typeof(MapProfile));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

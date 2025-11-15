@@ -34,7 +34,7 @@ public class PostController : ControllerBase
         return Ok(posts);
     }
 
-    [HttpGet( Name = "GetById")]
+    [HttpGet("GetById/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PostDto?>> GetById(int id)
@@ -43,7 +43,7 @@ public class PostController : ControllerBase
         return Ok(post);
     }
 
-    [HttpGet("GetByAuthorId")]
+    [HttpGet("getByAuthorId/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PostDto?>> GetByAuthorIdAsync(int id)
@@ -52,7 +52,7 @@ public class PostController : ControllerBase
         return Ok(post);
     }
     
-    [HttpGet("GetByAuthorName")]
+    [HttpGet("GetByAuthorName/{name:alpha}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PostDto?>> GetByAuthorNameAsync(string authorName)
@@ -97,7 +97,7 @@ public class PostController : ControllerBase
         return StatusCode(StatusCodes.Status500InternalServerError);
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("Delete/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(int id)
