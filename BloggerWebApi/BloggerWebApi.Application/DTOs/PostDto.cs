@@ -4,13 +4,13 @@ namespace BloggerWebApi.BloggerWebApi.Application.DTOs;
 
 public class PostDto
 {
-        public int Id { get; init; }
+        public Guid Id { get; init; }
         public string Title { get; init; } = null!;
         public string Content { get; init; } = null!;
         public DateTime CreatedAt { get; init; }
         public DateTime? UpdatedAt { get; init; }
         public Author Author { get; init; } 
-        public string? AuthorName { get; init; } 
+        // public string? AuthorName { get; init; } 
         
          // Create
             // public PostDto(string title, string content)

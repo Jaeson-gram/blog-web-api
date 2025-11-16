@@ -5,10 +5,10 @@ namespace BloggerWebApi.BloggerWebApi.Application.Interfaces;
 public interface IPostRepository
 {
     Task<IEnumerable<Post>> GetAllAsync();
-    Task<Post?> GetByIdAsync(int id);
+    Task<Post?> GetByIdAsync(string id);
     Task<IEnumerable<Post?>> GetByAuthorName(string authorName);
-    Task<IEnumerable<Post?>> GetByAuthorIdAsync(int authorId);
+    Task<IEnumerable<Post?>> GetByAuthorIdAsync(string authorId);
     Task CreateAsync(Post post);
     Task<Post> UpdateAsync(Post post);
-    Task<bool> DeleteAsync(int id);
+    Task<bool> DeleteAsync(string id);
 }

@@ -26,13 +26,13 @@ public class PostService
         return _mapper.Map<IEnumerable<PostDto>>(posts);
     }
 
-    public async Task<PostDto?> GetByIdAsync(int id)
+    public async Task<PostDto?> GetByIdAsync(string id)
     {
         var post = await _postRepository.GetByIdAsync(id);
         return post == null ? null : _mapper.Map<PostDto>(post);
     }
     
-    public async Task<IEnumerable<PostDto?>> GetByAuthorIdAsync(int authorId)
+    public async Task<IEnumerable<PostDto?>> GetByAuthorIdAsync(string authorId)
     {
         var posts = await _postRepository.GetByAuthorIdAsync(authorId);
         return _mapper.Map<IEnumerable<PostDto>>(posts);
@@ -61,16 +61,16 @@ public class PostService
         return _mapper.Map<PostDto>(createdPost);
     }
     
-    public async Task<PostDto?> UpdateAsync(int id, CreatePostDto dto)
+    public async Task<PostDto?> UpdateAsync(string id, CreatePostDto dto)
     {
         var post = _mapper.Map<Post>(dto);
-        post.Id = id;
+        post.Id = Guid.Parse(id);
         
         var updated = await _postRepository.UpdateAsync(post);
         return updated == null ? null : _mapper.Map<PostDto>(updated);
     }
     
-    public Task DeleteAsync(int id)
+    public Task DeleteAsync(string id)
     {
         return _postRepository.DeleteAsync(id);
     }

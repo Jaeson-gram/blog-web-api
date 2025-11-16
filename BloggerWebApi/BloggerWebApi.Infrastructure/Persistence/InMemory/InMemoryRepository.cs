@@ -5,7 +5,7 @@ namespace BloggerWebApi.BloggerWebApi.Infrastructure.Persistence.InMemory;
 
 public class InMemoryRepository : IPostRepository
 {
-    private int idCounter = 0;
+    // private int idCounter = 0;
         public List<Author> Authors { get; set; }
         public List<Post> Posts { get; set; }
 
@@ -14,20 +14,52 @@ public class InMemoryRepository : IPostRepository
             // seed Authors
             Authors = new List<Author>
             {
-                new Author { Id = 1, Name = "Jey Electronica", Email = "jey@inspired.com" },
-                new Author { Id = 2, Name = "uk lele", Email = "uk@inspired.com" },
-                new Author { Id = 3, Name = "ore precious", Email = "pre.ore@inspired.com" }
+                new Author { Id = Guid.NewGuid(), Name = "Jey Electronica", Email = "jey@inspired.com" },
+                new Author { Id = Guid.NewGuid(), Name = "uk lele", Email = "uk@inspired.com" },
+                new Author { Id = Guid.NewGuid(), Name = "ore precious", Email = "pre.ore@inspired.com" }
             };
 
             // seed Posts
             Posts = new List<Post>
             {
                 // new Post {Title = "complex systems", Content = "what are complex systems? well.. let's ask the right que...", AuthorId = 1},
-                new Post {Title = "the electromagnetic spectrum", Content = "when you look around you...", AuthorName = "Jey Electronica" },
-                new Post {Title = "complex systems made simple", Content = "every sophisticated tech is basically simplicity in ...", AuthorName = "Jey Electronica" },
-                new Post {Title = "combinatorics", Content = "it all began with a zero, and a one", AuthorName = "Jey Electronica" },
-                new Post {Title = "how to make a dummy", Content = "", AuthorName = "uke lele" },
-
+                new Post {Title = "the electromagnetic spectrum", Content = "when you look around you, the things you see and the things you don't", 
+                    Author = new Author
+                    {
+                        Name = "jey electronica", Email = "jey@inspired.com", Id = Guid.NewGuid(), NoOfPosts = 3
+                    }},
+                new Post
+                {
+                    Title = "complex systems made simple", Content = "every sophisticated tech is beautifully portrayed simplicity",
+                    Author = new Author
+                    { 
+                        Name = "jey electronica", Email = "jey@inspired.com", Id = Guid.NewGuid(), NoOfPosts = 3
+                    }
+                },
+                new Post
+                {
+                    Title = "combinatorics", Content = "it all began with a zero, and a one",
+                    Author = new Author
+                    { 
+                        Name = "jey electronica", Email = "jey@inspired.com", Id = Guid.NewGuid(), NoOfPosts = 3
+                    }
+                },
+                new Post
+                {
+                    Title = "how to make a dummy", Content = "genius and idiots dwell in the human mind, harnessing the right ...",
+                    Author = new Author
+                    { 
+                        Name = "uke lele", Email = "uk@inspired.com", Id = Guid.NewGuid(), NoOfPosts = 3
+                    }
+                },
+                new Post
+                {
+                    Title = "inside an engine", Content = "a machine is not unlike a hamburger",
+                    Author = new Author
+                    { 
+                        Name = "precious ore", Email = "ore@inspired.com", Id = Guid.NewGuid(), NoOfPosts = 3
+                    }
+                },
             };
             
             // seed comments
@@ -38,34 +70,34 @@ public class InMemoryRepository : IPostRepository
             // };
         }
         
-        public int GetNextId() => Interlocked.Increment(ref idCounter);
+        // public int GetNextId() => Interlocked.Increment(ref idCounter);
         
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
             return await Task.FromResult<IEnumerable<Post>>(Posts);
         }
 
-        public async Task<Post?> GetByIdAsync(int id)
+        public async Task<Post?> GetByIdAsync(string id)
         {
-            var post = Posts.FirstOrDefault(p => p.Id == id);
+            var post = Posts.FirstOrDefault(p => p.Id == Guid.Parse(id));
             return await Task.FromResult(post);
         }
 
         public async Task<IEnumerable<Post?>> GetByAuthorName(string authorName)
         {
-            var posts = Posts.Where(p => p.AuthorName.ToLower() == authorName.ToLower());
+            var posts = Posts.Where(p => p.Author.Name.ToLower() == authorName.ToLower());
             return await Task.FromResult(posts);
         }
 
-        public async Task<IEnumerable<Post?>> GetByAuthorIdAsync(int authorId)
+        public async Task<IEnumerable<Post?>> GetByAuthorIdAsync(string authorId)
         {
-            var posts = Posts.Where(p => p.Author.Id == authorId);
+            var posts = Posts.Where(p => p.Author.Id == Guid.Parse(authorId));
             return await Task.FromResult(posts);
         }
 
         public Task CreateAsync(Post post)
         {
-            post.GetType().GetProperty("Id")?.SetValue(post, Posts.Count + 1);
+            post.GetType().GetProperty("Id")?.SetValue(post, Guid.NewGuid());
             Posts.Add(post);
             
             return Task.CompletedTask;
@@ -82,9 +114,9 @@ public class InMemoryRepository : IPostRepository
             return Task.FromResult(post);
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public Task<bool> DeleteAsync(string id)
         {
-            var postToDelete = Posts.FirstOrDefault(p => p.Id == id);
+            var postToDelete = Posts.FirstOrDefault(p => p.Id == Guid.Parse(id));
 
             if (postToDelete is null)
             {
