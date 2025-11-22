@@ -9,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<PostService>();
-builder.Services.AddSingleton<InMemoryRepository>();
-builder.Services.AddSingleton<IPostRepository, InMemoryRepository>();
+builder.Services.AddSingleton<InMemoryPostRepository>();
+builder.Services.AddSingleton<InMemoryDB>();
+
+builder.Services.AddScoped<IPostRepository, InMemoryPostRepository>();
 
  builder.Services.AddAutoMapper(typeof(MapProfile));
 

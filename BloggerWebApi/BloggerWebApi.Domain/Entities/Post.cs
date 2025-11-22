@@ -1,16 +1,22 @@
-﻿namespace BloggerWebApi.BloggerWebApi.Domain.Entities;
+﻿using BloggerWebApi.BloggerWebApi.Domain.Enums;
+
+namespace BloggerWebApi.BloggerWebApi.Domain.Entities;
 
 public class Post
 {
     public Guid Id {get; set;}
     public string Title {get; set;}
+    public string Slug {get; set;}
     public string Content { get; set;}
-    public DateTime CreatedAt {get; set;}
+    public string Excerpt {get; set;}
+    public Status Status {get; set;}
+    public DateTime CreatedAt {get; set;} = DateTime.UtcNow;
+    public DateTime PublishedAt {get; set;}
     public DateTime UpdatedAt {get; set;}
-    // public int? AuthorId { get; set; }
+    public Guid AuthorId { get; set; }
     public Author Author {get; set;}
-
-    // public string? AuthorName { get; set; }
+    public List<Comment> Comments { get; set; } = new();
+    public List<string> Tags { get; set; } = new();
 
     public Post()
     {

@@ -11,4 +11,9 @@ public interface IPostRepository
     Task CreateAsync(Post post);
     Task<Post> UpdateAsync(Post post);
     Task<bool> DeleteAsync(string id);
+    
+    //
+    // get by date
+    // get by date range
+    // get today posts
 }

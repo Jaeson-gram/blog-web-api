@@ -14,7 +14,7 @@ namespace BloggerWebApi.BloggerWebApi.Api.Controllers;
 
 public class PostController : ControllerBase
 {
-    // private readonly InMemoryRepository _memoryRepository;
+    // private readonly InMemoryPostRepository _memoryRepository;
     private readonly PostService _postService;
 
     public PostController(PostService postService)

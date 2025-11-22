@@ -9,8 +9,8 @@ public class MapProfile  : Profile
     public MapProfile()
     {
         // CreateMap<Post, PostDto>().ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author != null ? src.Author.Name : "Unknown"));
-        CreateMap<Post, PostDto>();
-        CreateMap<PostDto, Post>();
+        CreateMap<Post, PostDto>().ReverseMap();
+        // CreateMap<PostDto, Post>();
         CreateMap<CreatePostDto, Post>();
         CreateMap<UpdatePostDto, Post>();
     }
