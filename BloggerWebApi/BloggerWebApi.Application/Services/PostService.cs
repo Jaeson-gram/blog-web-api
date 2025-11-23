@@ -9,13 +9,13 @@ namespace BloggerWebApi.BloggerWebApi.Application.Services;
 
 public class PostService
 {
-    private readonly InMemoryPostRepository _storage;
+    // private readonly InMemoryPostRepository _storage;
     private readonly IPostRepository _postRepository;
     private readonly IMapper _mapper;
     
     public PostService(InMemoryPostRepository storage, IPostRepository postRepository, IMapper mapper)
     {
-        _storage = storage;
+        // _storage = storage;
         _postRepository = postRepository;
         _mapper = mapper;
     }

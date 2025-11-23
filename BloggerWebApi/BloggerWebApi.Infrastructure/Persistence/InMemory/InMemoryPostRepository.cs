@@ -1,5 +1,7 @@
-﻿using BloggerWebApi.BloggerWebApi.Application.Interfaces;
+﻿using BloggerWebApi.BloggerWebApi.Application.DTOs;
+using BloggerWebApi.BloggerWebApi.Application.Interfaces;
 using BloggerWebApi.BloggerWebApi.Domain.Entities;
+using BloggerWebApi.BloggerWebApi.Domain.Enums;
 
 namespace BloggerWebApi.BloggerWebApi.Infrastructure.Persistence.InMemory;
 
@@ -37,13 +39,30 @@ public class InMemoryPostRepository : IPostRepository
             var posts = _db.Posts.Where(p => p.Author.Id == Guid.Parse(authorId));
             return await Task.FromResult(posts);
         }
+    
 
-        public Task CreateAsync(Post post)
+
+        public Task<Post> CreateAsync(Post post, bool isPrivate) // DateTime publishTime)
         {
-            post.GetType().GetProperty("Id")?.SetValue(post, Guid.NewGuid());
-            _db.Posts.Add(post);
+            // post.GetType().GetProperty("Id")?.SetValue(post, Guid.NewGuid());
+            // var forExcerp = post.Content.Reverse();
+
+            var newPost = new Post
+            {
+                Id = Guid.NewGuid(),
+                Title = post.Title,
+                Slug = string.Empty,
+                Content = post.Content,
+                Excerpt = (string)post.Content.Take<char>(20),
+                Status = !isPrivate ? Status.Published : Status.Private,
+                PublishedAt = DateTime.UtcNow, // for now
+                AuthorId = post.AuthorId,
+                Comments = [],
+            };
             
-            return Task.CompletedTask;
+            _db.Posts.Add(newPost);
+            
+            return (Task<Post>)Task.CompletedTask;
         }
 
         public Task<Post> UpdateAsync(Post post)

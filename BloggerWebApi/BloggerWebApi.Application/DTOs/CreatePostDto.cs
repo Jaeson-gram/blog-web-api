@@ -11,7 +11,7 @@ public class CreatePostDto
     [Required]
     [MinLength(200)]
     public string Content { get; init; } = null!;
-    public Guid? AuthorId { get; init; }
+    public Guid AuthorId { get; init; }
     // public string? AuthorName { get; init; }
     // public Author Author { get; init; } 
 }

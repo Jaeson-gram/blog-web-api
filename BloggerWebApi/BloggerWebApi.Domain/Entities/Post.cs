@@ -16,7 +16,9 @@ public class Post
     public Guid AuthorId { get; set; }
     public Author Author {get; set;}
     public List<Comment> Comments { get; set; } = new();
-    public List<string> Tags { get; set; } = new();
+    
+    // todo -> will add tags later
+    // public List<string> Tags { get; set; } = new();
 
     public Post()
     {

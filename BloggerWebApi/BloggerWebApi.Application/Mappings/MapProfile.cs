@@ -13,5 +13,6 @@ public class MapProfile  : Profile
         // CreateMap<PostDto, Post>();
         CreateMap<CreatePostDto, Post>();
         CreateMap<UpdatePostDto, Post>();
+        CreateMap<Author, AuthorDto>().ReverseMap();
     }
 }

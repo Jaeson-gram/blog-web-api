@@ -8,11 +8,12 @@ using BloggerWebApi.BloggerWebApi.Infrastructure.Persistence.InMemory;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<PostService>();
-builder.Services.AddSingleton<InMemoryPostRepository>();
+// builder.Services.AddSingleton<PostService>();
+// builder.Services.AddSingleton<InMemoryPostRepository>();
 builder.Services.AddSingleton<InMemoryDB>();
 
 builder.Services.AddScoped<IPostRepository, InMemoryPostRepository>();
+builder.Services.AddScoped<IAuthorRepository, InMemoryAuthorRepository>();
 
  builder.Services.AddAutoMapper(typeof(MapProfile));
 

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using BloggerWebApi.BloggerWebApi.Application.DTOs;
 using BloggerWebApi.BloggerWebApi.Application.Interfaces;
 using BloggerWebApi.BloggerWebApi.Domain.Entities;
 
@@ -53,7 +54,7 @@ public class InMemoryAuthorRepository : IAuthorRepository
     /// todo ->
     /// <summary>create methods for number range too so admin can get range
     /// suitable for things like awards </summary>
-    public async Task<IEnumerable<Author?>> GetByNoOfPostsAsync(int value )
+    public async Task<IEnumerable<Author?>> GetByNoOfPostsAsync(int value)
     {
         var authors = _db.Authors.FindAll(a => a.Posts.Count == value);
         
@@ -67,18 +68,39 @@ public class InMemoryAuthorRepository : IAuthorRepository
         return await Task.FromResult(author);
     }
 
-    public async Task CreateAsync(Author author)
+    public async Task<Author> CreateAsync(AuthorDto author)
     {
-        throw new NotImplementedException();
+        //author.GetType().GetProperty("Id")?.SetValue(author, Guid.NewGuid());
+        var newAuthor = new Author
+        {
+            Id = Guid.NewGuid(),
+            Email = author.Email,
+            Name = author.Name,
+            Bio = string.Empty,
+            Posts = new List<Post>(),
+            NumberOfPosts = 0,
+        };
+        
+        return await Task.FromResult(newAuthor);
     }
 
-    public async Task<Post> UpdateAsync(Author author)
+    public async Task<Author> UpdateAsync(Author author)
     {
-        throw new NotImplementedException();
+        var authorToUpdate = _db.Authors.FirstOrDefault(a => a.Id == author.Id);
+        
+        authorToUpdate.Name = author.Name;
+        authorToUpdate.Bio = author.Bio;
+        
+        // todo -> add email later when there's verification code
+        
+        return await Task.FromResult(authorToUpdate);
     }
 
     public async Task<bool> DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        var authorToDelete = _db.Authors.FirstOrDefault(a => a.Id == Guid.Parse(id));
+        
+        _db.Authors.Remove(authorToDelete);
+        return await Task.FromResult(true);
     }
 }
