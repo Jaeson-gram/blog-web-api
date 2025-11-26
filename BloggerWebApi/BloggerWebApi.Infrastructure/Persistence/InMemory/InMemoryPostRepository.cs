@@ -27,6 +27,36 @@ public class InMemoryPostRepository : IPostRepository
             var post = _db.Posts.FirstOrDefault(p => p.Id == Guid.Parse(id));
             return await Task.FromResult(post);
         }
+    
+        public async Task<Post?> GetBySlugAsync(string slug)
+        {
+            var post = _db.Posts.FirstOrDefault(p => p.Slug.Equals(slug, StringComparison.OrdinalIgnoreCase));
+
+            return post;
+        }
+
+        public async Task<IEnumerable<Post>?> GetPublishedAsync(int? page, int? pageSize)
+        {
+            // var query = _db.Posts.AsQueryable();
+            var query = _db.Posts.Where(p => p.PostStatus == PostStatus.Published)
+                .OrderByDescending(p => p.PublishedAt ?? p.CreatedAt);
+
+            if (page.HasValue)
+            {
+                query = (IOrderedEnumerable<Post>)query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
+            }
+
+            return await Task.FromResult(query.AsEnumerable());
+        }
+
+        public async Task<IEnumerable<Post>?> GetDraftsByAuthorIdAsync(string authorId)
+        {
+            var posts = _db.Posts.Where(p =>
+                p.AuthorId == Guid.Parse(authorId) && p.PostStatus == PostStatus.Draft).OrderByDescending(p => p.CreatedAt);
+
+            return posts.AsEnumerable();
+        }
+        
 
         public async Task<IEnumerable<Post?>> GetByAuthorName(string authorName)
         {
@@ -40,40 +70,23 @@ public class InMemoryPostRepository : IPostRepository
             return await Task.FromResult(posts);
         }
     
-
-
-        public Task<Post> CreateAsync(Post post, bool isPrivate) // DateTime publishTime)
+        public Task AddAsync(Post post)
         {
-            // post.GetType().GetProperty("Id")?.SetValue(post, Guid.NewGuid());
-            // var forExcerp = post.Content.Reverse();
-
-            var newPost = new Post
-            {
-                Id = Guid.NewGuid(),
-                Title = post.Title,
-                Slug = string.Empty,
-                Content = post.Content,
-                Excerpt = (string)post.Content.Take<char>(20),
-                Status = !isPrivate ? Status.Published : Status.Private,
-                PublishedAt = DateTime.UtcNow, // for now
-                AuthorId = post.AuthorId,
-                Comments = [],
-            };
-            
-            _db.Posts.Add(newPost);
-            
-            return (Task<Post>)Task.CompletedTask;
+            _db.Posts.Add(post);
+            return Task.CompletedTask;
         }
 
         public Task<Post> UpdateAsync(Post post)
         {
             var existingPost = _db.Posts.FirstOrDefault(p => p.Id == post.Id);
-            if (existingPost is null)
+            if (existingPost is not null)
             {
-                return null;
+                _db.Posts.Remove(existingPost);
             }
-            existingPost.Update(post.Title, post.Content);
+
+            _db.Posts.Add(post);
             return Task.FromResult(post);
+            // existingPost.Update(post.Title, post.Content);
         }
 
         public Task<bool> DeleteAsync(string id)
@@ -82,7 +95,7 @@ public class InMemoryPostRepository : IPostRepository
 
             if (postToDelete is null)
             {
-                return null;
+                return Task.FromResult(false);
             }
             
             _db.Posts.Remove(postToDelete);

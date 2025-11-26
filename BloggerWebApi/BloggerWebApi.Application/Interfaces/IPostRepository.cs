@@ -7,11 +7,17 @@ public interface IPostRepository
 {
     Task<IEnumerable<Post>> GetAllAsync();
     Task<Post?> GetByIdAsync(string id);
-    Task<IEnumerable<Post?>> GetByAuthorName(string authorName);
-    Task<IEnumerable<Post?>> GetByAuthorIdAsync(string authorId);
-    Task<Post> CreateAsync(Post post, bool isPrivate = false);
+    Task<Post?> GetBySlugAsync(string slug);
+    Task<IEnumerable<Post>?> GetPublishedAsync(int? page, int? pageSize = 10);
+    Task<IEnumerable<Post>?> GetDraftsByAuthorIdAsync (string authorId);
+    Task AddAsync(Post post);
     Task<Post> UpdateAsync(Post post);
     Task<bool> DeleteAsync(string id);
+    
+    Task<IEnumerable<Post?>> GetByAuthorName(string authorName);
+    Task<IEnumerable<Post?>> GetByAuthorIdAsync(string authorId);
+    // Task<Post> CreateAsync(Post post, bool isPrivate = false);
+
     
     //
     // get by date

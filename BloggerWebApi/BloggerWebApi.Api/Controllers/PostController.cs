@@ -64,21 +64,21 @@ public class PostController : ControllerBase
     [HttpPost("CreatePost")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<PostDto>> CreatePost([FromBody] CreatePostDto postDto)
+    public async Task<ActionResult<PostDto>> CreatePost([FromBody] CreatePostDto postDto, string authorId)
     {
         if (!ModelState.IsValid)
         {
             return ValidationProblem(ModelState);
         }
 
-        var created = await _postService.CreateAsync(postDto);
+        var created = await _postService.CreateAsync(dto: postDto, authorId: authorId);
         return CreatedAtRoute(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpPut("Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Update(string id, [FromBody] CreatePostDto postDto)
+    public async Task<IActionResult> Update(string id, [FromBody] UpdatePostDto postDto, string authorId)
     {
         if (!ModelState.IsValid)
         {
@@ -92,7 +92,7 @@ public class PostController : ControllerBase
             return NotFound("no post with that id was found");
         }
         
-        var updated = await _postService.UpdateAsync(id, postDto);
+        var updated = await _postService.UpdateAsync(postDto, id, authorId);
         
         return StatusCode(StatusCodes.Status500InternalServerError);
     }
@@ -100,10 +100,9 @@ public class PostController : ControllerBase
     [HttpDelete("Delete/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> Delete(string id, string authorId)
     {
-        var deleted =  _postService.DeleteAsync(id);
-
+        var deleted =  _postService.DeleteAsync(id, authorId);
         return NoContent();
     }
 

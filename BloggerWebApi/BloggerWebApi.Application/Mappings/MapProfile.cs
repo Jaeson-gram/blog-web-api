@@ -14,5 +14,7 @@ public class MapProfile  : Profile
         CreateMap<CreatePostDto, Post>();
         CreateMap<UpdatePostDto, Post>();
         CreateMap<Author, AuthorDto>().ReverseMap();
+        CreateMap<Post, PostSummaryDto>().ReverseMap();
+        CreateMap<Post, PostDetailDto>().ReverseMap();
     }
 }

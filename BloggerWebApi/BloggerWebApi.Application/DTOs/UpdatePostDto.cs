@@ -1,7 +1,6 @@
 ﻿namespace BloggerWebApi.BloggerWebApi.Application.DTOs;
 
-public class UpdatePostDto
+public class UpdatePostDto : CreatePostDto
 {
-        public string Title { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
+
 }

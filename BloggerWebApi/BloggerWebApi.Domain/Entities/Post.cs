@@ -9,13 +9,14 @@ public class Post
     public string Slug {get; set;}
     public string Content { get; set;}
     public string Excerpt {get; set;}
-    public Status Status {get; set;}
+    public PostStatus PostStatus {get; set;}
     public DateTime CreatedAt {get; set;} = DateTime.UtcNow;
-    public DateTime PublishedAt {get; set;}
+    public DateTime? PublishedAt {get; set;}
     public DateTime UpdatedAt {get; set;}
     public Guid AuthorId { get; set; }
     public Author Author {get; set;}
     public List<Comment> Comments { get; set; } = new();
+    public List<string> Tags { get; set; } = new();
     
     // todo -> will add tags later
     // public List<string> Tags { get; set; } = new();

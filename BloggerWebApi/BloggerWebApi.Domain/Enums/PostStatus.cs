@@ -1,6 +1,6 @@
 ﻿namespace BloggerWebApi.BloggerWebApi.Domain.Enums;
 
-public enum Status
+public enum PostStatus
 {
     Draft,
     Private,
